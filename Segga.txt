@@ -1,0 +1,1125 @@
+#include "pch.h"
+#include <iostream>
+#include <Windows.h>
+
+using namespace System;
+using namespace std;
+
+char fichas(int i)
+{
+    if (i == 1)
+    {
+        return char(02);
+    }
+    else if (i == 0)
+    {
+
+        return ' ';
+    }
+    else if (i == 2)
+    {
+        return char(01);
+    }
+    else if (i == 3)
+    {
+        return 'P';
+    }
+    else if (i == 5)
+    {
+        return ' ';
+    }
+
+}
+
+int logo[15][34] = {
+{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+{6,6,6,5,4,4,4,6,6,6,5,4,4,4,6,5,4,4,4,6,5,4,4,4,4,6,6,6,5,4,6,6,6,6},
+{6,6,5,4,6,6,6,4,6,6,5,4,6,6,6,5,4,6,6,6,5,4,6,6,4,6,6,5,4,6,4,6,6,6},
+{6,6,6,5,4,6,6,6,6,6,5,4,6,6,6,5,4,6,6,6,5,4,6,6,6,6,5,4,6,6,6,4,6,6},
+{6,6,6,6,6,4,6,6,6,6,5,4,4,4,6,5,4,4,4,6,5,4,6,6,6,6,5,4,6,6,6,4,6,6},
+{6,6,6,6,6,6,4,6,6,6,5,4,6,6,6,5,4,6,6,6,5,4,4,4,4,6,5,4,4,4,4,4,6,6},
+{6,6,5,4,6,6,6,4,6,6,5,4,6,6,6,5,4,6,6,6,5,4,6,6,4,6,5,4,6,6,6,4,6,6},
+{6,6,6,5,4,4,4,6,6,6,5,4,4,4,6,5,4,4,4,6,5,4,4,4,4,6,5,4,6,6,6,4,6,6},
+{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+{6,6,6,6,6,6,5,4,4,6,6,4,6,6,6,5,4,4,4,4,6,6,5,4,4,4,4,4,6,6,6,6,6,6},
+{6,6,6,6,6,6,5,4,4,6,6,4,6,6,6,5,4,6,6,4,6,6,5,4,6,6,6,4,6,6,6,6,6,6},
+{6,6,6,6,6,6,5,4,4,6,6,4,6,6,6,5,4,4,4,4,6,6,5,4,6,6,6,6,6,6,6,6,6,6},
+{6,6,6,6,6,6,5,4,4,6,6,4,6,6,6,5,4,6,6,6,6,6,5,4,6,6,6,4,6,6,6,6,6,6},
+{6,6,6,6,6,6,5,4,4,4,4,4,6,6,6,5,4,6,6,6,6,6,5,4,4,4,4,4,6,6,6,6,6,6},
+{6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+};
+
+int tablero[7][7] =
+{
+                 {7,7,7,7,7,7,7},
+                 {7,0,0,2,0,0,7},
+                 {7,0,0,0,0,0,7},
+                 {7,1,0,5,0,1,7},
+                 {7,0,0,0,0,0,7},
+                 {7,0,0,2,0,0,7},
+                 {7,7,7,7,7,7,7}
+
+};
+
+void mostrarPlayer2();
+void mostrarPlayer1();
+void mostrarTablero();
+void mostrarLogo();
+int playerDos(int posicionx2, int posiciony2, char tecla);
+int playerUno(int posicionx1, int posiciony1, char tecla);
+int nuevaPartida();
+
+int main()
+{
+    nuevaPartida();
+    system("pause");
+    return 0;
+
+
+}
+
+void mostrarTablero()
+{
+    cout << "      1   2   3   4   5  \n";
+    cout << "    +---+---+---+---+---+\n";
+    for (int i = 1; i < 6; i++)
+    {
+        cout << "  ";
+        cout << i << " |";
+        for (int j = 1; j < 6; j++)
+        {
+            cout << " " << fichas(tablero[i][j]) << " |";
+        }
+        cout << " ";
+        cout << endl;
+        cout << "    +---+---+---+---+---+\n";
+    }
+    cout << endl;
+
+}
+
+void mostrarLogo() {
+    for (int i = 0; i < 15; i++)
+    {
+        for (int j = 0; j < 34; j++)
+        {
+            Console::SetCursorPosition(j, i);
+            if (logo[i][j] == 6)Console::ForegroundColor = ConsoleColor::Black;
+            else if (logo[i][j] == 4)Console::ForegroundColor = ConsoleColor::DarkRed;
+            else if (logo[i][j] == 5)Console::ForegroundColor = ConsoleColor::White;
+            cout << char(219);
+        }
+    }
+}
+
+void menu()//presentacion CAMBIAR LA PRESENTACION
+{
+    mostrarLogo();
+    cout << endl;
+    Console::ForegroundColor = ConsoleColor::White;
+    cout << "-----------------------------------" << endl;
+    cout << "|               MENU              |" << endl;
+    cout << "-----------------------------------" << endl;
+    Console::ForegroundColor = ConsoleColor::DarkRed;
+    cout << "1) JUGAR" << endl;
+    Console::ForegroundColor = ConsoleColor::White;
+    cout << "2) DEFINIR PLAYERS" << endl;
+    Console::ForegroundColor = ConsoleColor::DarkRed;
+    cout << "3) INTEGRANTES DEL GRUPO" << endl;
+    Console::ForegroundColor = ConsoleColor::White;
+    cout << "4) CONTROLES" << endl;
+    Console::ForegroundColor = ConsoleColor::DarkRed;
+    cout << "5) REGLAS" << endl;
+    Console::ForegroundColor = ConsoleColor::White;
+    cout << "6) SALIR" << endl;
+    cout << endl;
+    cout << "INGRESE OPCION: ";
+
+}
+
+int playerDos(int posicionx2, int posiciony2, char tecla)
+{
+    int puntP2 = 0;
+    if ((tecla == 'w' || tecla == 'W') && tablero[posicionx2][posiciony2] == 2)
+    {
+        if (tablero[posicionx2 - 1][posiciony2] == 0 || tablero[posicionx2 - 1][posiciony2] == 5)
+        {
+            tablero[posicionx2][posiciony2] = 0;
+            tablero[posicionx2 - 1][posiciony2] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 - 1][posiciony2]);
+            if (tablero[posicionx2 - 1][posiciony2 - 1] == 1 && tablero[posicionx2 - 1][posiciony2 - 2] == 2)
+            {
+                tablero[posicionx2 - 1][posiciony2] = 2;
+                tablero[posicionx2 - 1][posiciony2 - 1] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2 - 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 - 1][posiciony2 + 1] == 1 && tablero[posicionx2 - 1][posiciony2 + 2] == 2)
+            {
+                tablero[posicionx2 - 1][posiciony2] = 2;
+                tablero[posicionx2 - 1][posiciony2 + 1] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2 - 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 - 2][posiciony2] == 1 && tablero[posicionx2 - 3][posiciony2] == 2)
+            {
+                tablero[posicionx2 - 2][posiciony2] = 0;
+                tablero[posicionx2 - 1][posiciony2] = 2;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 - 2][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2]);
+                puntP2++;
+                return puntP2;
+            }
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2 - 1][posiciony2] == 2)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2 - 1][posiciony2] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 - 1][posiciony2]);
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2 - 1][posiciony2] == 1)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2 - 1][posiciony2] = 1;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 - 1][posiciony2]);
+        }
+    }
+    if ((tecla == 's' || tecla == 'S') && tablero[posicionx2][posiciony2] == 2)
+    {
+        if (tablero[posicionx2 + 1][posiciony2] == 0 || tablero[posicionx2 + 1][posiciony2] == 5)
+        {
+            tablero[posicionx2][posiciony2] = 0;
+            tablero[posicionx2 + 1][posiciony2] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 + 1][posiciony2]);
+            if (tablero[posicionx2 + 1][posiciony2 - 1] == 1 && tablero[posicionx2 + 1][posiciony2 - 2] == 2)
+            {
+                tablero[posicionx2 + 1][posiciony2] = 2;
+                tablero[posicionx2 + 1][posiciony2 - 1] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2 - 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 + 1][posiciony2 + 1] == 1 && tablero[posicionx2 + 1][posiciony2 + 2] == 2)
+            {
+                tablero[posicionx2 + 1][posiciony2] = 2;
+                tablero[posicionx2 + 1][posiciony2 + 1] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2 + 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 + 2][posiciony2] == 1 && tablero[posicionx2 + 3][posiciony2] == 2)
+            {
+                tablero[posicionx2 + 1][posiciony2] = 2;
+                tablero[posicionx2 + 2][posiciony2] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2]);
+                fichas(tablero[posicionx2 + 2][posiciony2]);
+                puntP2++;
+                return puntP2;
+            }
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2 + 1][posiciony2] == 2)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2 + 1][posiciony2] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 + 1][posiciony2]);
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2 + 1][posiciony2] == 1)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2 + 1][posiciony2] = 1;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2 + 1][posiciony2]);
+        }
+    }
+    if ((tecla == 'a' || tecla == 'A') && tablero[posicionx2][posiciony2] == 2)
+    {
+        if (tablero[posicionx2][posiciony2 - 1] == 0 || tablero[posicionx2][posiciony2 - 1] == 5)
+        {
+            tablero[posicionx2][posiciony2] = 0;
+            tablero[posicionx2][posiciony2 - 1] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 - 1]);
+            if (tablero[posicionx2][posiciony2 - 2] == 1 && tablero[posicionx2][posiciony2 - 3] == 2)
+            {
+                tablero[posicionx2][posiciony2 - 1] = 2;
+                tablero[posicionx2][posiciony2 - 2] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2][posiciony2 - 2]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 - 1][posiciony2 - 1] == 1 && tablero[posicionx2 - 2][posiciony2 - 1] == 2)
+            {
+                tablero[posicionx2 - 1][posiciony2 - 1] = 0;
+                tablero[posicionx2][posiciony2 - 1] = 2;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2 - 1]);
+                fichas(tablero[posicionx2][posiciony2 - 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 + 1][posiciony2 - 1] == 1 && tablero[posicionx2 + 2][posiciony2 - 1] == 2)
+            {
+                tablero[posicionx2 + 1][posiciony2 - 1] = 0;
+                tablero[posicionx2][posiciony2 - 1] = 2;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2 - 1]);
+                fichas(tablero[posicionx2][posiciony2 - 1]);
+                puntP2++;
+                return puntP2;
+            }
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2][posiciony2 - 1] == 2)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2][posiciony2 - 1] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 - 1]);
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2][posiciony2 - 1] == 1)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2][posiciony2 - 1] = 1;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 - 1]);
+        }
+    }
+    if ((tecla == 'd' || tecla == 'D') && tablero[posicionx2][posiciony2] == 2)
+    {
+        if (tablero[posicionx2][posiciony2 + 1] == 0 || tablero[posicionx2][posiciony2 + 1] == 5)
+        {
+            tablero[posicionx2][posiciony2] = 0;
+            tablero[posicionx2][posiciony2 + 1] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 + 1]);
+            if (tablero[posicionx2][posiciony2 + 2] == 1 && tablero[posicionx2][posiciony2 + 3] == 2)
+            {
+                tablero[posicionx2][posiciony2 + 1] = 2;
+                tablero[posicionx2][posiciony2 + 2] = 0;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2][posiciony2 + 2]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 - 1][posiciony2 + 1] == 1 && tablero[posicionx2 - 2][posiciony2 + 1] == 2)
+            {
+                tablero[posicionx2 - 1][posiciony2 + 1] = 0;
+                tablero[posicionx2][posiciony2 + 1] = 2;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 - 1][posiciony2 + 1]);
+                fichas(tablero[posicionx2][posiciony2 + 1]);
+                puntP2++;
+                return puntP2;
+            }
+            if (tablero[posicionx2 + 1][posiciony2 + 1] == 1 && tablero[posicionx2 + 2][posiciony2 + 1] == 2)
+            {
+                tablero[posicionx2 + 1][posiciony2 + 1] = 0;
+                tablero[posicionx2][posiciony2 + 1] = 2;
+                tablero[posicionx2][posiciony2] = 0;
+                fichas(tablero[posicionx2][posiciony2]);
+                fichas(tablero[posicionx2 + 1][posiciony2 + 1]);
+                fichas(tablero[posicionx2][posiciony2 + 1]);
+                puntP2++;
+                return puntP2;
+            }
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2][posiciony2 + 1] == 2)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2][posiciony2 + 1] = 2;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 + 1]);
+        }
+        if (tablero[posicionx2][posiciony2] == 2 && tablero[posicionx2][posiciony2 + 1] == 1)
+        {
+            tablero[posicionx2][posiciony2] = 2;
+            tablero[posicionx2][posiciony2 + 1] = 1;
+            fichas(tablero[posicionx2][posiciony2]);
+            fichas(tablero[posicionx2][posiciony2 + 1]);
+        }
+    }
+
+    return 0;
+}
+int playerUno(int posicionx1, int posiciony1, char tecla)
+{
+    int puntP1 = 0;
+    if ((tecla == 'w' || tecla == 'W') && tablero[posicionx1][posiciony1] == 1)
+    {
+        if (tablero[posicionx1 - 1][posiciony1] == 0 || tablero[posicionx1 - 1][posiciony1] == 5)
+        {
+            tablero[posicionx1][posiciony1] = 0;
+            tablero[posicionx1 - 1][posiciony1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 - 1][posiciony1]);
+            if (tablero[posicionx1 - 2][posiciony1] == 2 && tablero[posicionx1 - 3][posiciony1] == 1)
+            {
+                tablero[posicionx1 - 2][posiciony1] = 0;
+                tablero[posicionx1 - 1][posiciony1] = 1;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 - 2][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 - 1][posiciony1 - 1] == 2 && tablero[posicionx1 - 1][posiciony1 - 2] == 1)
+            {
+                tablero[posicionx1 - 1][posiciony1] = 1;
+                tablero[posicionx1 - 1][posiciony1 - 1] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1 - 1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 - 1][posiciony1 + 1] == 2 && tablero[posicionx1 - 1][posiciony1 + 2] == 1)
+            {
+                tablero[posicionx1 - 1][posiciony1] = 1;
+                tablero[posicionx1 - 1][posiciony1 + 1] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1 - 1]);
+                puntP1++;
+                return puntP1;
+            }
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1 - 1][posiciony1] == 1)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1 - 1][posiciony1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 - 1][posiciony1]);
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1 - 1][posiciony1] == 2)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1 - 1][posiciony1] = 2;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 - 1][posiciony1]);
+        }
+    }
+    if ((tecla == 's' || tecla == 'S') && tablero[posicionx1][posiciony1] == 1)
+    {
+        if ((tablero[posicionx1 + 1][posiciony1] == 0 || tablero[posicionx1 + 1][posiciony1] == 5))
+        {
+            tablero[posicionx1][posiciony1] = 0;
+            tablero[posicionx1 + 1][posiciony1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 + 1][posiciony1]);
+            if (tablero[posicionx1 + 1][posiciony1 - 1] == 2 && tablero[posicionx1 + 1][posiciony1 - 2] == 1)
+            {
+                tablero[posicionx1 + 1][posiciony1] = 1;
+                tablero[posicionx1 + 1][posiciony1 - 1] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1 - 1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 + 1][posiciony1 + 1] == 2 && tablero[posicionx1 + 1][posiciony1 + 2] == 1)
+            {
+                tablero[posicionx1 + 1][posiciony1] = 1;
+                tablero[posicionx1 + 1][posiciony1 + 1] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1 + 1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 + 2][posiciony1] == 2 && tablero[posicionx1 + 3][posiciony1] == 1)
+            {
+                tablero[posicionx1 + 1][posiciony1] = 1;
+                tablero[posicionx1 + 2][posiciony1] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1]);
+                fichas(tablero[posicionx1 + 2][posiciony1]);
+                puntP1++;
+                return puntP1;
+            }
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1 + 1][posiciony1] == 1)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1 + 1][posiciony1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 + 1][posiciony1]);
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1 + 1][posiciony1] == 2)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1 + 1][posiciony1] = 2;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1 + 1][posiciony1]);
+        }
+    }
+    if ((tecla == 'a' || tecla == 'A') && tablero[posicionx1][posiciony1] == 1)
+    {
+        if (tablero[posicionx1][posiciony1 - 1] == 0 || tablero[posicionx1][posiciony1 - 1] == 5)
+        {
+            tablero[posicionx1][posiciony1] = 0;
+            tablero[posicionx1][posiciony1 - 1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 - 1]);
+            if (tablero[posicionx1][posiciony1 - 2] == 2 && tablero[posicionx1][posiciony1 - 3] == 1)
+            {
+                tablero[posicionx1][posiciony1 - 1] = 1;
+                tablero[posicionx1][posiciony1 - 2] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1][posiciony1 - 2]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 - 1][posiciony1 - 1] == 2 && tablero[posicionx1 - 2][posiciony1 - 1] == 1)
+            {
+                tablero[posicionx1 - 1][posiciony1 - 1] = 0;
+                tablero[posicionx1][posiciony1 - 1] = 1;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1 - 1]);
+                fichas(tablero[posicionx1][posiciony1 - 1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 + 1][posiciony1 - 1] == 2 && tablero[posicionx1 + 2][posiciony1 - 1] == 1)
+            {
+                tablero[posicionx1 + 1][posiciony1 - 1] = 0;
+                tablero[posicionx1][posiciony1 - 1] = 1;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1 - 1]);
+                fichas(tablero[posicionx1][posiciony1 - 1]);
+                puntP1++;
+                return puntP1;
+            }
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1][posiciony1 - 1] == 1)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1][posiciony1 - 1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 - 1]);
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1][posiciony1 - 1] == 2)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1][posiciony1 - 1] = 2;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 - 1]);
+        }
+    }
+    if ((tecla == 'd' || tecla == 'D') && tablero[posicionx1][posiciony1] == 1)
+    {
+        if (tablero[posicionx1][posiciony1 + 1] == 0 || tablero[posicionx1][posiciony1 + 1] == 5)
+        {
+            tablero[posicionx1][posiciony1] = 0;
+            tablero[posicionx1][posiciony1 + 1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 + 1]);
+            if (tablero[posicionx1][posiciony1 + 2] == 2 && tablero[posicionx1][posiciony1 + 3] == 1)
+            {
+                tablero[posicionx1][posiciony1 + 1] = 1;
+                tablero[posicionx1][posiciony1 + 2] = 0;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1][posiciony1 + 2]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 - 1][posiciony1 + 1] == 2 && tablero[posicionx1 - 2][posiciony1 + 1] == 1)
+            {
+                tablero[posicionx1 - 1][posiciony1 + 1] = 0;
+                tablero[posicionx1][posiciony1 + 1] = 1;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 - 1][posiciony1 + 1]);
+                fichas(tablero[posicionx1][posiciony1 + 1]);
+                puntP1++;
+                return puntP1;
+            }
+            if (tablero[posicionx1 + 1][posiciony1 + 1] == 2 && tablero[posicionx1 + 2][posiciony1 + 1] == 1)
+            {
+                tablero[posicionx1 + 1][posiciony1 + 1] = 0;
+                tablero[posicionx1][posiciony1 + 1] = 1;
+                tablero[posicionx1][posiciony1] = 0;
+                fichas(tablero[posicionx1][posiciony1]);
+                fichas(tablero[posicionx1 + 1][posiciony1 + 1]);
+                fichas(tablero[posicionx1][posiciony1 + 1]);
+                puntP1++;
+                return puntP1;
+            }
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1][posiciony1 + 1] == 1)
+        {
+            tablero[posiciony1][posiciony1] = 1;
+            tablero[posicionx1][posiciony1 + 1] = 1;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 + 1]);
+        }
+        if (tablero[posicionx1][posiciony1] == 1 && tablero[posicionx1][posiciony1 + 1] == 2)
+        {
+            tablero[posicionx1][posiciony1] = 1;
+            tablero[posicionx1][posiciony1 + 1] = 2;
+            fichas(tablero[posicionx1][posiciony1]);
+            fichas(tablero[posicionx1][posiciony1 + 1]);
+        }
+    }
+
+    return 0;
+}
+void mostrarPlayer2()
+{
+    cout << "Jugador 2 a ganado" << endl;
+}
+void mostrarPlayer1()
+{
+    cout << "Jugador 1 a ganado" << endl;
+}
+struct Jugadores {
+
+    char nombrePlayers[45];
+
+}
+player1 = { "PLAYER1" }, player2 = { "PLAYER2" };
+
+int nuevaPartida(){
+    int puntajeInicial = 0;
+    int puntP1 = 0, puntP2 = 0;
+    int op1, op2;
+    int p1 = 0, p2 = 0;
+    char tecla;
+    int posicionX1, posicionY1, posicionX2, posicionY2;
+
+    int turnoP1 = 0, turnoP2 = 0, turno2 = 0, turno1 = 0;
+
+
+    do
+    {
+        menu();
+        cin >> op1;
+        switch (op1)
+        {
+        case 1:
+            cout << endl;
+            cout << "¿QUIEN TENDRA EL PRIMER TURNO? " << endl;
+            cout << "1. " << player1.nombrePlayers << char(02) << endl;
+            cout << "2. " << player2.nombrePlayers << char(01) << endl;
+            cout << "INGRESE EL NUMERO: ";
+            cin >> op2;
+
+
+            for (int i = 0; i < 25; i++) {
+                cout << "CARGANDO... " << endl;
+                cout << "=========================" << endl;
+
+                for (int j = 0; j < i; j++)
+                {
+                    cout << char(219);
+                }
+                cout << endl;
+                cout << "=========================" << endl;
+                system("cls");
+
+            }
+
+            system("cls");
+
+            switch (op2)
+            {
+            case 1:
+                do {
+
+                    puntajeInicial = 0;
+                    turnoP1 = 2;
+                    turnoP2 = 2;
+
+                    do {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << player1.nombrePlayers << char(02) << ": " << p1 << endl;
+                        cout << "Jugadas " << player2.nombrePlayers << char(01) << ": " << p2 << endl;
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(02) << player1.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Ficha en fila: ";
+                            cin >> posicionX1;
+                            cout << "Ficha en columna: ";
+                            cin >> posicionY1;
+                        } while (tablero[posicionX1][posicionY1] != 0 || tablero[posicionX1][posicionY1] == 5);
+
+                        p1++;
+                        turnoP1--;
+                        tablero[posicionX1][posicionY1] = 1;
+                        fichas(tablero[posicionX1][posicionY1]);
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turnoP1 != 0);
+
+                    do {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << endl;
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(01) << player2.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Ficha en fila: ";
+                            cin >> posicionX2;
+                            cout << "Ficha en columna: ";
+                            cin >> posicionY2;
+                        } while (tablero[posicionX2][posicionY2] != 0 || tablero[posicionX2][posicionY2] == 5);
+
+                        turnoP2--;
+                        p2++;
+                        tablero[posicionX2][posicionY2] = 2;
+                        fichas(tablero[posicionX2][posicionY2]);
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turnoP2 != 0);
+
+                    for (int i = 1; i < 6; i++)
+                        for (int j = 1; j < 6; j++)
+                            if (tablero[i][j] == 0) puntajeInicial++;
+
+                } while (puntajeInicial != 0);
+
+                do
+                {
+                    turno2 = 1;
+                    turno1 = 1;
+                    do
+                    {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << "             " << "Puntos: " << puntP1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << "             " << "Puntos: " << puntP2 << endl;
+
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(01) << player2.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Elegir ficha en fila: ";
+                            cin >> posicionX2;
+                            cout << "Elegir ficha en columna: ";
+                            cin >> posicionY2;
+                        } while (tablero[posicionX2][posicionY2] != 2);
+
+                        cout << endl;
+                        cout << "Ingrese W para moviento hacia arriba" << endl;
+                        cout << "Ingrese S para moviento hacia abajo" << endl;
+                        cout << "Ingrese A para moviento hacia la izquierda" << endl;
+                        cout << "Ingrese D para moviento hacia la derecha" << endl;
+                        cout << endl;
+                        cout << "Esperando...";
+                        cin >> tecla;
+
+                        puntP2 = puntP2 + playerDos(posicionX2, posicionY2, tecla);
+                        p2++;
+                        turno2--;
+
+                        if (puntP2 == 12)
+                        {
+                            system("cls");
+                            cout << endl;
+                            mostrarPlayer1();
+                            cout << endl;
+                            system("pause");
+                            system("cls");
+                            return 0;
+                        }
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turno2 != 0);
+
+                    do
+                    {
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << "             " << "Puntos: " << puntP1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << "             " << "Puntos: " << puntP2 << endl;
+
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(02) << player1.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Elegir ficha en fila: ";
+                            cin >> posicionX1;
+                            cout << "Elegir ficha en columna: ";
+                            cin >> posicionY1;
+                        } while (tablero[posicionX1][posicionY1] != 1);
+
+                        cout << endl;
+                        cout << "Ingrese W para moviento hacia arriba" << endl;
+                        cout << "Ingrese S para moviento hacia abajo" << endl;
+                        cout << "Ingrese A para moviento hacia la izquierda" << endl;
+                        cout << "Ingrese D para moviento hacia la derecha" << endl;
+                        cout << endl;
+                        cout << "Esperando...";
+                        cin >> tecla;
+
+                        puntP1 = puntP1 + playerUno(posicionX1, posicionY1, tecla);
+                        p1++;
+                        turno1--;
+
+                        if (puntP1 == 12)
+                        {
+                            system("cls");
+                            cout << endl;
+                            mostrarPlayer2();
+                            cout << endl;
+                            system("pause");
+                            system("cls");
+                            return 0;
+                        }
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turno1 != 0);
+
+                } while (puntP1 != 12 || puntP2 != 12);
+                break;
+
+            case 2:
+
+                do
+                {
+                    puntajeInicial = 0;
+                    turnoP1 = 2;
+                    turnoP2 = 2;
+
+                    do {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << endl;
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(01) << player2.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Insertar ficha en fila: ";
+                            cin >> posicionX2;
+                            cout << "Insertar ficha en columna: ";
+                            cin >> posicionY2;
+                        } while (tablero[posicionX2][posicionY2] != 0 || tablero[posicionX2][posicionY2] == 5);
+
+                        p2++;
+                        turnoP2--;
+                        tablero[posicionX2][posicionY2] = 2;
+                        fichas(tablero[posicionX2][posicionY2]);
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turnoP2 != 0);
+
+                    do {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << endl;
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(02) << player1.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Insertar ficha en fila: ";
+                            cin >> posicionX1;
+                            cout << "Insertar ficha en columna: ";
+                            cin >> posicionY1;
+                        } while (tablero[posicionX1][posicionY1] != 0 || tablero[posicionX1][posicionY1] == 5);
+
+                        turnoP1--;
+                        p1++;
+                        tablero[posicionX1][posicionY1] = 1;
+                        fichas(tablero[posicionX1][posicionY1]);
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turnoP1 != 0);
+
+                    for (int i = 1; i < 6; i++)
+                        for (int j = 1; j < 6; j++)
+                            if (tablero[i][j] == 0) puntajeInicial++;
+
+                } while (puntajeInicial != 0);
+
+                do
+                {
+                    turno2 = 1;
+                    turno1 = 1;
+                    do
+                    {
+
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << "             " << "Puntos: " << puntP1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << "             " << "Puntos: " << puntP2 << endl;
+
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(02) << player1.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Eligir ficha en fila: ";
+                            cin >> posicionX1;
+                            cout << "Eligir ficha en columna: ";
+                            cin >> posicionY1;
+                        } while (tablero[posicionX1][posicionY1] != 1);
+
+                        cout << endl;
+                        cout << "Ingrese W para moviento hacia arriba" << endl;
+                        cout << "Ingrese S para moviento hacia abajo" << endl;
+                        cout << "Ingrese A para moviento hacia la izquierda" << endl;
+                        cout << "Ingrese D para moviento hacia la derecha" << endl;
+                        cout << endl;
+                        cout << "Esperando...";
+                        cin >> tecla;
+
+                        puntP1 = puntP1 + playerUno(posicionX1, posicionY1, tecla);
+                        p1++;
+                        turno1--;
+
+                        if (puntP1 == 12)
+                        {
+                            system("cls");
+                            cout << endl;
+                            mostrarPlayer2();
+                            cout << endl;
+                            system("pause");
+                            system("cls");
+                            return 0;
+                        }
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turno1 != 0);
+
+                    do
+                    {
+                        mostrarTablero();
+                        cout << "Jugadas " << char(02) << player1.nombrePlayers << ": " << p1 << "             " << "Puntos: " << puntP1 << endl;
+                        cout << "Jugadas " << char(01) << player2.nombrePlayers << ": " << p2 << "             " << "Puntos: " << puntP2 << endl;
+                        cout << endl;
+
+                        do {
+                            cout << "Turno del Jugador " << char(01) << player2.nombrePlayers << endl;
+                            cout << endl;
+                            cout << "Elegir ficha en fila: ";
+                            cin >> posicionX2;
+                            cout << "Elegir ficha en columna: ";
+                            cin >> posicionY2;
+                        } while (tablero[posicionX2][posicionY2] != 2);
+
+                        cout << endl;
+                        cout << "Ingrese W para moviento hacia arriba" << endl;
+                        cout << "Ingrese S para moviento hacia abajo" << endl;
+                        cout << "Ingrese A para moviento hacia la izquierda" << endl;
+                        cout << "Ingrese D para moviento hacia la derecha" << endl;
+                        cout << endl;
+                        cout << "Esperando...";
+                        cin >> tecla;
+
+                        puntP2 = puntP2 + playerDos(posicionX2, posicionY2, tecla);
+                        p2++;
+                        turno2--;
+
+                        if (puntP2 == 12)
+                        {
+                            system("cls");
+                            cout << endl;
+                            mostrarPlayer1();
+                            cout << endl;
+                            system("pause");
+                            system("cls");
+                            return 0;
+                        }
+
+                        system("pause");
+                        system("cls");
+
+                    } while (turno2 != 0);
+
+                } while (puntP1 != 12 || puntP2 != 12); break;
+
+            }break;
+
+        case 2:
+
+            cout << endl;
+            cin.ignore();
+
+            Console::ForegroundColor = ConsoleColor::DarkRed;
+            cout << "Ingrese un nombre para el Player1 " << char(02) << " : " << endl;
+            cin.getline(player1.nombrePlayers, 30);
+            cout << endl;
+            Console::ForegroundColor = ConsoleColor::White;
+
+            cout << "El nuevo nombre del Player1 es: " << player1.nombrePlayers << endl;
+            cout << endl;
+
+            Console::ForegroundColor = ConsoleColor::DarkRed;
+
+            cout << "Ingrese un nombre para el Player2 " << char(01) << " : " << endl;
+            cin.getline(player2.nombrePlayers, 30);
+            cout << endl;
+            Console::ForegroundColor = ConsoleColor::White;
+
+            cout << "El nuevo nombre del Player2 es: " << player2.nombrePlayers << endl;
+            cout << endl;
+
+            system("pause");
+            system("cls");
+
+            break;
+        case 3:
+            system("cls");
+            Console::ForegroundColor = ConsoleColor::White;
+            cout << "--------------------------------- " << endl;
+            cout << "|           INTEGRANTES          |" << endl;
+            cout << "--------------------------------- " << endl;
+            Console::ForegroundColor = ConsoleColor::DarkRed;
+            cout << "Integrante 1 : POLANCO CONTRERAS, GABRIEL IVAN" << endl;
+            cout << endl;
+            cout << "Integrante 2 : RIVERA VALDIVIA, JOSE JOAQUIN" << endl;
+            cout << endl;
+            cout << "Integrante 3 : PERFECTO ALARCON, ALVARO IVAN" << endl;
+            cout << endl;
+            cout << "Integrante 4 : CACHIQUE ESPINOZA, RAFAEL" << endl;
+            cout << endl;
+
+            system("pause");
+            system("cls");
+            break;
+
+        case 4:
+            system("cls");
+            Console::ForegroundColor = ConsoleColor::White;
+            cout << "--------------------------------- " << endl;
+            cout << "|           CONTROLES            |" << endl;
+            cout << "--------------------------------- " << endl;
+            cout << "      PLAYER 1 " << char(02) << " Y PLAYER 2 " << char(01) << "         " << endl;
+            cout << "----------------------------------" << endl;
+            cout << endl;
+            Console::ForegroundColor = ConsoleColor::DarkRed;
+            cout << "   W arriba" << endl;
+            cout << "   S abajo" << endl;
+            cout << "   A izquierda" << endl;
+            cout << "   D derecha" << endl;
+            cout << endl;
+            system("pause");
+            system("cls");
+
+
+            break;
+        case 5:
+            system("cls");
+            Console::ForegroundColor = ConsoleColor::White;
+            cout << "--------------------------------- " << endl;
+            cout << "|        REGLAS DEL JUEGO        |" << endl;
+            cout << "--------------------------------- " << endl;
+
+            cout << "REGLA 1: Los dos jugadores van colonacdo 2 fichas por casilla vacia salvo el del centro." << endl;
+            cout << endl;
+            cout << "REGLA 2: El jugador que coloca sus 2 ultimas fichas es quien comienza la segunda fase." << endl;
+            cout << endl;
+            cout << "REGLA 3: Desplazar una ficha a cualquier casilla contigua libre, comprendida la del centro, en vertical u horizontal, pero no en diagonal." << endl; cout << endl;
+            cout << endl;
+            cout << "REGLA 4: Una ficha es capturada y removida si esta es encerrada entre dos fichas contrarias; pero no en sentido diagonal." << endl;
+            cout << endl;
+            cout << "REGLA 5: Un solo movimiento puede implicar el encierro y la captura de varias piezas a la vez." << endl;
+            cout << endl;
+            cout << "REGLA 6: El jugador que realiza una captura puede seguir moviendo la misma ficha que realizo el ultimo movimiento mientras siga capturando." << endl;
+            cout << endl;
+            cout << "REGLA 7: Una ficha que se coloca voluntariamente entre dos fichas enemigas no es capturada, salvo si una de las piezas enemigas se retira y vuelve." << endl;
+            cout << endl;
+            cout << "REGLA 8: La ficha que ocupa la casilla central (la que es sombreada de verde) no puede ser capturada." << endl;
+            cout << endl;
+            cout << "REGLA 9: Cuando un jugador no puede mover le pasa el turno, al contrario." << endl;
+            cout << endl;
+            cout << "REGLA 10: Se gana si se capturan todas las fichas contrarias." << endl;
+            cout << endl;
+            cout << "REGLA 11: Cada jugador puede construir una barrera (o muro) con fichas detras de la cual solo se encuentran sus propias fichas que pueden moverse sin peligro de ser capturadas." << endl;
+            cout << endl;
+            cout << "REGLA 12: En el caso de existir una barrera gana el jugador que tiene la mayor cantidad de fichas, si tienen la misma cantidad es un empate." << endl;
+            cout << endl;
+
+            system("pause");
+            system("cls");
+            break;
+        case 6:
+            break;
+
+        default:
+            if (op1 < 1 || op1 >6)
+            {
+                system("cls");
+                Console::ForegroundColor = ConsoleColor::White;
+                cout << "-----------------------------------" << endl;
+                cout << "|Porfavor ingrese un numero valido|" << endl;
+                cout << "-----------------------------------" << endl;
+                system("pause");
+                system("cls");
+
+                break;
+            }
+
+        }
+
+    } while (op1 != 6);
+
+    return 0;
+
+}
+
